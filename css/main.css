@@ -224,7 +224,35 @@ div.xs-low-pad {padding: 0 0 0 15px !important;}
   opacity: 0.4;
 }
 
+.ajax-loading .table.list tbody {
+    opacity: 0.1;      
+}
 
+.ajax-loader {
+  position:relative;  
+}
+
+.ajax-loader>div {
+  min-height: 200px;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  display: none;
+}
+
+.ajax-loading .ajax-loader>div {
+  display: block;
+}
+
+#form-list .ajax-loader>div {
+  background: rgba(0, 0, 0, 0) url("../img/ajax_loader_gray_128.gif") no-repeat scroll 45% 10%;
+  top: 50px;
+}
+
+#search-box .ajax-loader>div {
+  background: rgba(0, 0, 0, 0) url("../img/ajax_loader_gray_64.gif") no-repeat scroll 47% 10%;
+  top:30px;
+}
 
 
 

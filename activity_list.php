@@ -37,16 +37,21 @@ $Paginator  = new ActivityPaginator($conn, $query, $group, $search_string, $sear
 
 $results = $Paginator->getData($limit,$page);
 
-include 'head.html'; ?>
+if (isAjaxRequest()) {
+  include 'include_list_activitys.php';  
+} else {
 
-<h1 class="text-center">Cercador d'activitats</h1>
+  include 'head.html'; ?>
+  <h1 class="text-center">Cercador d'activitats</h1>
+  <div id="form-list" class="form-list" data-model="activity"> 
+    <?php 
+    include 'include_search_activitys.php'; 
+    include 'include_list_activitys.php';
+    ?>
+  </div>
+<?php
+  include 'foot.html'; 
+}
 
-<div>
-<?php include 'include_search_activitys.php'; ?>
-</div>
-
-<?php 
-include 'include_list_activitys.php';
-include 'foot.html'; 
 ?>
 

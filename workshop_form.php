@@ -187,7 +187,7 @@ include 'head.html';
 </div>
 
 
- <div id="search-box" class="col-xs-4 toggle-panel toggle-panel-right toggle-panel-autoclose">
+ <div id="search-box" class="col-xs-4 toggle-panel toggle-panel-right toggle-panel-autoclose form-list" data-model="activity">
       <div class="controls"><a class="close toggle-panel-click" data-toggle-panel-id="search-box">&times;</a></div>
       <div id="search-box-form"><?php include 'include_search_activitys.php'; ?></div>
       <div id="search-box-list"><?php include 'include_list_activitys.php'; ?></div>

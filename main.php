@@ -1,6 +1,5 @@
 <?php 
 
-
   $types = array(
     '14' => 'So-silenci',
     '4' => 'Descoberta de sons',
@@ -116,6 +115,10 @@
             return $default;
         }
     }
+  }
+
+  function isAjaxRequest() {
+    return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'); 
   }
 
   function list_controls($limit=10, $expanded='on') {

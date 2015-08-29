@@ -1,0 +1,127 @@
+
+;(function($, musTeach, window, document, undefined) { 
+
+   // External module dependecies
+   var config = musTeach.config,
+       appendQueryParams = musTeach.appendQueryParams,
+       formValues = musTeach.formValues;
+
+   var listsEvents = musTeach.listsEvents = musTeach.listsEvents || function(opts) {
+
+      var thisObject = {},
+          searchForm,
+          refreshListForm,
+          $switchListMode,
+          model;
+
+      var getRefreshURL = function() {
+        return config.getPath(model, 'list', appendQueryParams($(searchForm).serialize(), formValues(refreshListForm)));
+      };
+
+      thisObject.init = function($rootNode) {
+
+          if (typeof $rootNode === 'undefined') $rootNode = $(document);
+
+          searchForm = $rootNode[0].querySelector('form.search');
+          refreshListForm = $rootNode[0].querySelector('.pagination.form');
+          model = $rootNode.data('model');
+
+          // .refresh-list buttons
+          $('.refresh-list').click(function(e) {
+
+            e.preventDefault();
+            //window.document.location.search = appendQueryParams($(searchForm).serialize(), formValues(refreshListForm));
+            $refresh =  $('.refreshable.list');
+            $refresh.addClass('ajax-loading'); 
+
+            $.get(getRefreshURL(),
+              function(data) {
+                 
+                 $refresh.replaceWith(data);
+                 thisObject.init($rootNode);
+                 $refresh.removeClass('ajax-loading');
+              }
+            );
+
+          });
+              
+          $('.list-limit-change').change(function() {
+             searchForm.elements.namedItem('limit').value = $(this).val();
+          });
+
+          // Hide or show detailed info in lists and update listsExpandedInfo  value
+          $switchListMode = $(".switch").bootstrapSwitch().on('switchChange.bootstrapSwitch', function(event, state) {
+            console.log('toggle');
+            refreshListForm.elements.namedItem('expanded').value = state ? 'on' : 'off';
+            searchForm.elements.namedItem('expanded').value = refreshListForm.elements.namedItem('expanded').value;
+            console.log('value ' + refreshListForm.elements.namedItem('expanded').value);
+            $('table.list').toggleClass('expanded');      
+          });
+
+          // Initialize show mode after page loaded
+          if ($switchListMode.length && !($switchListMode.bootstrapSwitch('state'))) {
+              $('table.list').removeClass('expanded'); 
+          }        
+
+          // Context menu selected row in a list
+          $('.context').contextmenu({
+            target:'#context-menu', 
+            //before: function(e,context) {
+              // execute code before context menu if shown
+            //},
+            onItem: function(context,e) {
+              var id = $(context).data('id');
+              var model = $(context).data('model');
+              var action = $(e.target).data('action');
+              
+              switch(action) {
+                  case 'view':
+                     window.location.href = config.getPath(model, 'view', id);
+                     break;
+                  case 'update':
+                     window.location.href = config.getPath(model, 'update', id);
+                     break;
+                  case 'delete':
+                     if (confirm("Segur que vols eliminar el registre seleccionat ?")) {
+                        window.location.href = config.getPath(model, 'delete', id);
+                     }
+                     break;
+              }
+            }
+          });
+
+          //Mouse click action over rows
+          $('.context').click(function() {
+              var id = $(this).data('id');
+              var model = $(this).data('model');
+              window.location.href = config.getPath(model, 'view', id);
+          });
+          
+
+          // Hover/unhover tr.title & tr.content as a single block
+          $('tr.title, tr.content').hover(
+            function(evt) {
+              $(this).addClass('hovered');
+              if ($(this).hasClass('title')) {
+                $(this).next().addClass('hovered');
+              } else {
+                $(this).prev().addClass('hovered');
+              } 
+            },
+            function(evt) {
+             $(this).removeClass('hovered');
+              if ($(this).hasClass('title')) {
+                  $(this).next().removeClass('hovered');
+              } else {
+                  $(this).prev().removeClass('hovered');
+              } 
+            }
+          );
+
+
+          return thisObject;
+      };
+
+      return thisObject;
+    }
+}($, window._musTeach, window, document));

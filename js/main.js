@@ -2,29 +2,20 @@
 
   $(document).ready(function(){
 
-    var appendQueryParams = window._musTeach.appendQueryParams,
+    var config = window._musTeach.config,
+        appendQueryParams = window._musTeach.appendQueryParams,
         toggleDraggable = window._musTeach.toggleDraggable,
         observeDOMAppend = window._musTeach.observeDOMAppend,
         formValues = window._musTeach.formValues,
+        listsEvents = window._musTeach.listsEvents(),
         DragAndDrop = window._musTeach.DragAndDrop,
         togglePanels = window._musTeach.togglePanels;
-
+        
 
     var dragAndDrop = [], // Stored drag and drop operations
-        panels = togglePanels(),
-        actions = {
-          doView : function(id, model) { window.document.location = model + '_view.php?id=' + id; },
-          doList : function(query, model) { window.document.location = model + '_list.php?' + query; },
-          doUpdate : function(id, model) { window.document.location = model + '_form.php?id=' + id + '&action=update'; },
-          doDelete : function(id, model) { window.document.location = model + '.php?id=' + id + '&action=delete'; }
-        },
-        searchForm,
-        refreshListForm,
-        $switchListMode,
-        state = {
-          
-        };
-    
+        panels = togglePanels();
+        
+            
     
     // START UPDATE EVENT LISTENERS AT DOM CHANGE
     observeDOMAppend( document.querySelector('body > .container') ,function(e){ 
@@ -36,43 +27,12 @@
     // END UPDATE EVENT LISTENERS AT DOM CHANGE
 
 
-    // START REFRESH LIST FORM
-    //--------------------------
-
-    searchForm = document.querySelector('form.search');
-    refreshListForm = document.querySelector('.pagination.form');
-
-    // .refresh-list buttons
-    $('.refresh-list').click(function(e) {
-
-      //console.log('ref');
-      e.preventDefault();
-      //console.log(appendQueryParams("", $.extend({}, formValues(refreshListForm), formValues(searchForm))));
-      //console.log($(searchForm).serialize());
-      //console.log(appendQueryParams($(searchForm).serialize(), formValues(refreshListForm)));
-      window.document.location.search = appendQueryParams($(searchForm).serialize(), formValues(refreshListForm));
-    });
-        
-    $('.list-limit-change').change(function() {
-       searchForm.elements.namedItem('limit').value = $(this).val();
-    });
-
-    // Hide or show detailed info in lists and update listsExpandedInfo  value
-    $switchListMode = $(".switch").bootstrapSwitch().on('switchChange.bootstrapSwitch', function(event, state) {
-      console.log('toggle');
-      refreshListForm.elements.namedItem('expanded').value = state ? 'on' : 'off';
-      searchForm.elements.namedItem('expanded').value = refreshListForm.elements.namedItem('expanded').value;
-      console.log('value ' + refreshListForm.elements.namedItem('expanded').value);
-      $('table.list').toggleClass('expanded');      
-    });
-
-    // Initialize show mode after page loaded
-    if ($switchListMode.length && !($switchListMode.bootstrapSwitch('state'))) {
-        $('table.list').removeClass('expanded'); 
-    }        
-
+    // INITIALIZE SEARCH FORM AND LIST EVENTS
+    //----------------------------------------
+    listsEvents.init($('.form-list'));
+ 
     // --------------------------
-    // END REFRESH LIST FORM
+    // END 
 
 
     // START DRAG'N DROP EVENTS
@@ -162,74 +122,15 @@
     // In order to enable text selection within some text elements the draggable attribute must be temporarily 'deactivated'
     $('textarea, input, td, p, h1, h2, h3, h4, h5, h6').on('focus blur', toggleDraggable);
 
-    // END DRAG AND DROP EVENTS
-
-
-    // START TABLE ELEMENTS EVENTS
-    // --------------------------
-    // Context menu for performing actions inside rows of lists
-    $('.context').contextmenu({
-      target:'#context-menu', 
-      //before: function(e,context) {
-        // execute code before context menu if shown
-      //},
-      onItem: function(context,e) {
-        var id = $(context).data('id');
-        var model = $(context).data('model');
-        var action = $(e.target).data('action');
-        
-        switch(action) {
-            case 'view':
-               actions.doView(id, model);
-               break;
-            case 'update':
-               actions.doUpdate(id, model);
-               break;
-            case 'delete':
-               if (confirm("Segur que vols eliminar el registre seleccionat ?")) {
-                  actions.doDelete(id, model);
-               }
-               break;
-        }
-      }
-    });
-
-    //Mouse clic action over rows
-    $('.context').click(function() {
-        var id = $(this).data('id');
-        var model = $(this).data('model');
-        actions.doView(id, model);
-    });
-    
-
-    // Hover/unhover tr.title & tr.content as a single block
-    $('tr.title, tr.content').hover(
-      function(evt) {
-        $(this).addClass('hovered');
-        if ($(this).hasClass('title')) {
-          $(this).next().addClass('hovered');
-        } else {
-          $(this).prev().addClass('hovered');
-        } 
-      },
-      function(evt) {
-       $(this).removeClass('hovered');
-        if ($(this).hasClass('title')) {
-            $(this).next().removeClass('hovered');
-        } else {
-            $(this).prev().removeClass('hovered');
-        } 
-      }
-    );
-
-    // END TABLE ELEMENTS EVENTS
+    // END 
+  
  
-
-    // SHOW / HIDE PANELS
+    // PANELS
     panels.init();
     // END
 
-    // START ACTIVITY FORM
+
+    // ACTIVITY FORM
     // --------------------------
     // Dinamically add or remove song tracks to the activty form
     $('form .add-track-link').click(function() {
@@ -246,10 +147,9 @@
        }
     });
 
-    // END ACTIVITY FORM
+    // END
 
-
-    // START GLOBAL EVENTS
+    // GLOBAL EVENTS
     // --------------------------
     // Buttons acting as links
     $('button.link').click(function() {
