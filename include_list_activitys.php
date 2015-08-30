@@ -42,9 +42,10 @@
           
         </tr>
       </thead>
-      <tbody>  
 
-    <?php for( $i = 0; $i < count( $results->data ); $i++ ) : ?>
+      <tbody class="ajax-mask">  
+
+      <?php for( $i = 0; $i < count( $results->data ); $i++ ) : ?>
 
             <tr class="context relative title" data-toggle="context" data-target="#context-menu" data-model="activity" data-id="<?php echo $results->data[$i]['id']; ?>">
               <td colspan='3'>
@@ -79,7 +80,7 @@
                   <?php /*<td><?php echo $results->data[$i]['keywords']; ?></td> */ ?>
                    
             </tr>
-    <?php endfor; ?>
+      <?php endfor; ?>
 
 
       </tbody>

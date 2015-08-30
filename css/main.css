@@ -224,10 +224,6 @@ div.xs-low-pad {padding: 0 0 0 15px !important;}
   opacity: 0.4;
 }
 
-.ajax-loading .table.list tbody {
-    opacity: 0.1;      
-}
-
 .ajax-loader {
   position:relative;  
 }
@@ -246,12 +242,12 @@ div.xs-low-pad {padding: 0 0 0 15px !important;}
 
 #form-list .ajax-loader>div {
   background: rgba(0, 0, 0, 0) url("../img/ajax_loader_gray_128.gif") no-repeat scroll 45% 10%;
-  top: 50px;
+  top: 100px;
 }
 
 #search-box .ajax-loader>div {
   background: rgba(0, 0, 0, 0) url("../img/ajax_loader_gray_64.gif") no-repeat scroll 47% 10%;
-  top:30px;
+  top:100px;
 }
 
 

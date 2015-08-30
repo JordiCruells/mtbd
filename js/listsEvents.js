@@ -4,6 +4,7 @@
    // External module dependecies
    var config = musTeach.config,
        appendQueryParams = musTeach.appendQueryParams,
+       ajaxRefresh = musTeach.ajaxRefresh,
        formValues = musTeach.formValues;
 
    var listsEvents = musTeach.listsEvents = musTeach.listsEvents || function(opts) {
@@ -18,30 +19,25 @@
         return config.getPath(model, 'list', appendQueryParams($(searchForm).serialize(), formValues(refreshListForm)));
       };
 
-      thisObject.init = function($rootNode) {
+      thisObject.init = function(rootNode, initiators) { // Initiators are methods which init method must run after a new fresh list has beeen loaded
 
-          if (typeof $rootNode === 'undefined') $rootNode = $(document);
+          if (typeof rootNode === 'undefined') rootNode = document;
 
-          searchForm = $rootNode[0].querySelector('form.search');
-          refreshListForm = $rootNode[0].querySelector('.pagination.form');
-          model = $rootNode.data('model');
+          searchForm = rootNode.querySelector('form.search');
+          refreshListForm = rootNode.querySelector('.pagination.form');
+          model = rootNode.getAttribute('data-model');
 
           // .refresh-list buttons
           $('.refresh-list').click(function(e) {
 
             e.preventDefault();
-            //window.document.location.search = appendQueryParams($(searchForm).serialize(), formValues(refreshListForm));
             $refresh =  $('.refreshable.list');
-            $refresh.addClass('ajax-loading'); 
-
-            $.get(getRefreshURL(),
-              function(data) {
-                 
-                 $refresh.replaceWith(data);
-                 thisObject.init($rootNode);
-                 $refresh.removeClass('ajax-loading');
-              }
-            );
+            ajaxRefresh(getRefreshURL(), $refresh, function() {
+              thisObject.init(rootNode, initiators); // initialize list and search form events
+              initiators.forEach(function(initiator) { // initialize other events or features
+                 initiator.init(rootNode);
+              });
+            });
 
           });
               

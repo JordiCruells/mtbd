@@ -104,4 +104,22 @@
             return obj;        
     };
 
+    var  ajaxRefresh = musTeach.ajaxRefresh = musTeach.ajaxRefresh || function($url, $refresh, callback) {
+
+            console.log('len ' + $refresh.addClass('ajax-loading').find('.ajax-mask').length);
+
+            $refresh.addClass('ajax-loading');
+            $ajaxMask =  $refresh.find('ajax-mask');
+
+            $('.ajax-mask').fadeTo(500, 0.1, function() {
+               $.get($url,
+                function(data) {                 
+                 $refresh.replaceWith(data);
+                 callback();
+                 $ajaxMask.fadeTo(500, 1, function() { $refresh.removeClass('ajax-loading'); });                 
+               });
+
+            }); 
+    };
+
 }(jQuery, window._musTeach = window._musTeach || {}, window, document));
