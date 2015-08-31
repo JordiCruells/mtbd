@@ -29,13 +29,14 @@ $search_ages = from_get('search_ages', array());
 //$query = "SELECT DISTINCT A.id, A.activity_name, A.description, A.goals, A.materials, A.observations, A.assesment, A.comments, A.keywords, A.types, A.song_themes, A.ages, A.timestamp FROM wp_musicteach_activity A ";
 //$query = "SELECT DISTINCT A.id, A.activity_name, A.description, A.goals, A.materials, A.observations, A.assesment, A.comments, A.keywords, A.types, A.song_themes, A.ages, A.timestamp, C.name FROM wp_musicteach_activity A 
 //LEFT JOIN wp_musicteach_activity_song B ON A.id = B.activity_id LEFT JOIN wp_musicteach_song C ON B.song_id = C.id";
-$query = "SELECT DISTINCT A.id, A.activity_name, A.description, A.goals, A.materials, A.observations, A.assesment, A.comments, A.keywords, A.types, A.song_themes, A.ages, A.timestamp, group_concat(C.name separator ', ') FROM wp_musicteach_activity A LEFT JOIN wp_musicteach_activity_song B ON A.id = B.activity_id LEFT JOIN wp_musicteach_song C ON B.song_id = C.id";
+$query = "SELECT DISTINCT A.id, A.activity_name, A.description, A.goals, A.materials, A.observations, A.assesment, A.comments, A.keywords, A.types, A.song_themes, A.ages, A.timestamp, group_concat(CONCAT(C.name,';',C.duration) separator ', ') FROM wp_musicteach_activity A LEFT JOIN wp_musicteach_activity_song B ON A.id = B.activity_id LEFT JOIN wp_musicteach_song C ON B.song_id = C.id";
 $group = " GROUP BY A.id ";
 $conn->set_charset("utf8");
 
 $Paginator  = new ActivityPaginator($conn, $query, $group, $search_string, $search_order, $search_types, $search_song_themes, $search_ages);
 
 $results = $Paginator->getData($limit,$page);
+
 
 if (isAjaxRequest()) {
   include 'include_list_activitys.php';  

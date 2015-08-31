@@ -223,7 +223,7 @@
 
     //return ((count($song_themes) > 1) ? ' | Temàtiques: ' : ' | Temàtica: ') . '<span class="text-primary">' . join(', ', $song_themes) . '</span>';
     //return ' &nbsp;<span class="glyphicon glyphicon-music"></span> Cançó ' . strtolower(join(', ', $song_themes));
-    return '<span class="' . $class . '"> <label class="fill rounded grey"><span class="glyphicon glyphicon-picture"></span></label> cançó ' . strtolower(join(', ', $song_themes)) . "</span>";
+    return '<span class="' . $class . '"> <label class="fill rounded grey"><span class="glyphicon glyphicon-picture"></span></label> cançó ' . mb_strtolower(join(', ', $song_themes)) . "</span>";
   
   }
 
@@ -234,7 +234,7 @@
     $song_themes = array_map('get_song_theme',$ids);
     if (count($song_themes) === '') return ''; */
 
-    return '<span class="' . $class . '"> <label class="fill rounded blue blue"><span class="glyphicon glyphicon-wrench"></span></label> ' . strtolower($str) . "</span>";
+    return '<span class="' . $class . '"> <label class="fill rounded blue blue"><span class="glyphicon glyphicon-wrench"></span></label> ' . mb_strtolower($str) . "</span>";
   
   }
 
