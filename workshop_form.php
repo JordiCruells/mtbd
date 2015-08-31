@@ -40,11 +40,6 @@ $conn = $c->getConnection();
 
 if ($action === 'update') {
 
-  /*if ($id <= 0) {
-    die 'if no valid'; exit;    
-  }*/
-
- 
   $activityDAO = new ActivityDAO($conn);
   $workshopDAO = new WorkshopDAO($conn);
   $workshop = $workshopDAO->select($id);
@@ -154,25 +149,14 @@ include 'head.html';
 
   <br>  
 
-      <div class="row">
-        <div class="col-xs-6">
+  <div class="row">
+        <div class="col-xs-12">
           <input type="checkbox" name="favourite" value="y" 
              <?php echo (!empty($workshop['favourite']) &&  $workshop['favourite'] !== 'n') ? ' checked ' : ''; ?> 
-          ><label> &nbsp;Marcar com a favorit ?</label>
-        </div>
-      </div>
-
-  <br>
-
-       <div class="row">
-          <div class="col-xs-2">
-            <label class="input"> Edat:</label>     
-            <div class="fieldset">
-                <?php radiobuttons($ages,'age', $workshop['age'], ''); ?>       
-            </div>
-          </div>      
-        </div>
-
+          ><label> &nbsp;Marcar com a favorit ?</label>        
+         <label> &nbsp;&nbsp;Per a quines edats ?</label>     
+         <?php checkboxes($ages,'age', $workshop['age'], ''); ?>       
+       </div>
   </div>
 
 
