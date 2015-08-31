@@ -11,12 +11,12 @@ class WorkshopDAO {
     }
 
     public function create($workshop) {
-      
+       
         $query = 'INSERT INTO wp_musicteach_workshop (workshop_date , group_id, observations, comments, favourite, age) values';
         $query .= '(?,?,?,?,?,?)';  
         $stmt = $this->_conn->prepare($query);
         $stmt->bind_param('sissss', 
-                          $workshop['workshop_date '], 
+                          $workshop['workshop_date'], 
                           $workshop['group_id'], 
                           $workshop['observations'],
                           $workshop['comments'],
@@ -25,6 +25,7 @@ class WorkshopDAO {
                         );
 
         $stmt->execute();
+
         $insert_id = $stmt->insert_id;
         $stmt->close();        
         return $insert_id;
@@ -90,6 +91,34 @@ class WorkshopDAO {
         $query = 'DELETE FROM wp_musicteach_workshop WHERE id = ?';
         $stmt = $this->_conn->prepare($query);
         $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $stmt->close();        
+
+      }
+
+      public function linkActivities($workshop_id, $activities) {
+
+        $query = 'INSERT INTO wp_musicteach_workshop_activity (workshop_id, workshop_block, activity_id) values (?,?,?)';  
+  
+        foreach ($activities as $block_id => $block_activities){ 
+          foreach ($block_activities as $activity_id => $value) {
+            //Insert relation into wp_musicteach_worksop_activity
+            $stmt = $this->_conn->prepare($query);
+            $stmt->bind_param('iii', 
+                             $workshop_id,
+                             $block_id,
+                             $activity_id);
+            $stmt->execute();
+            $stmt->close();             
+          }
+        }           
+      }
+
+      public function unlinkActivities($workshop_id) {
+
+        $query = 'DELETE FROM wp_musicteach_workshop_activity WHERE workshop_id = ?';
+        $stmt = $this->_conn->prepare($query);
+        $stmt->bind_param('i', $workshop_id);
         $stmt->execute();
         $stmt->close();        
 

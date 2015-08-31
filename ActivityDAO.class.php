@@ -111,7 +111,8 @@ class ActivityDAO {
         $stmt->execute();
         $stmt->close();        
 
-      }
+      }    
+
 
 }
 

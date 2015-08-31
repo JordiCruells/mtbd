@@ -155,7 +155,7 @@ include 'head.html';
              <?php echo (!empty($workshop['favourite']) &&  $workshop['favourite'] !== 'n') ? ' checked ' : ''; ?> 
           ><label> &nbsp;Marcar com a favorit ?</label>        
          <label> &nbsp;&nbsp;Per a quines edats ?</label>     
-         <?php checkboxes($ages,'age', $workshop['age'], ''); ?>       
+         <?php checkboxes($ages,'age[]', $workshop['age'], ''); ?>       
        </div>
   </div>
 
