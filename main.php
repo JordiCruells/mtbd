@@ -126,18 +126,73 @@
     $checked = ($expanded === 'on') ? ' checked' : '';
 
     echo '<form action="#" method="GET" class="pagination pagination-sm form" >' .
-             ' <input type="checkbox" name="expanded" class="switch" data-size="mini" data-on-text="Si" data-off-text="No" ' . $checked . ' /> <span class="text-primary"> &nbsp;Informació ampliada ? </span>'  .
+             ' <div class="switch-container"><input type="checkbox" name="expanded" class="switch" data-size="mini" data-on-text="Si" data-off-text="No" ' . $checked . ' /> <span class="text-primary"> &nbsp;Informació ampliada ? </span></div>'  .
              ' &nbsp; <span class="text-primary"> Mostrar </span><input class="list-limit-change" type="number" name="limit" value="' . $limit .'" size="3" min="5" max="100" step="5" /> <span class="text-primary"> ocurrències per pàgina </span>' .
              ' &nbsp; <button type="button" title="Refresca" class="refresh-list btn-primary"><span class="glyphicon glyphicon-refresh"></span></button>' . 
          '</form>'; 
   }
 
-  function workshop_blocks() {
+
+  function activity_wrapper($block_id, $activity) {
+
+    echo '<div class="ws-activity-wrapper" draggable="true">' .
+           '<div class="ws-activity-container" draggable="true">' .
+             '<div></div>' .
+           '</div>' .
+           '<input type="hidden" value="1" name="activity[' . $block_id . '][' . $activity['id'] . ']">' .
+           '<div class="ws-activity" data-id="' . $activity['id'] . '" draggable="true">' . $activity['activity_name'] . '</div>' .
+         '</div>';
+  }
+
+  function activity_remainder() {
+    echo '<div class="remainder">' .
+            '<div class="ws-activity-container remainder over"></div>' .
+         '</div>';
+  }
+
+
+  function block_wrapper_start($block_id) {
+     global $types;
+     echo '<div class="ws-block-wrapper" draggable="true">' .
+            '<div class="ws-block-container" draggable="true"></div>' .
+            '<div class="ws-block toggle-panel-click" draggable="true" data-id="' . $block_id . '" data-toggle-panel-id="search-box">' .
+              '<header class="ws-title text-center">' . $types[$block_id] . '</header>' .
+              '<div class="content">';
+  }
+
+  function block_wrapper_end() {
+      echo '</div></div></div>';
+  }
+
+  function block_remainder() {
+    echo '<div class="remainder">' .
+           '<div class="ws-block-container remainder over" draggable="true"></div>' .
+         '</div>';
+  }
+  
+  function key_compare_func($key1, $key2)
+  {
+      if ($key1 == $key2)
+          return 0;
+      else if ($key1 > $key2)
+          return 1;
+      else
+          return -1;
+  }
+
+  function workshop_blocks($exclude_blocks) {
     //global $workshop_blocks;
     global $types;
 
+    /*echo 'exclude_blocks ';
+    print_r($exclude_blocks);*/
+
+    $blocks = array_diff_ukey($types, $exclude_blocks, 'key_compare_func');
+
+    //print_r($blocks); exit;
+
     echo '<div id="ws-blocks-store">';
-    foreach ($types as $key => $value) {       
+    foreach ($blocks as $key => $value) {       
       echo '<div class="ws-block-wrapper" draggable="true">';
          echo '<div class="ws-block-container" draggable="true"></div>';
          echo '<div class="ws-block" data-id="' . $key . '" draggable="true"><header class="ws-title text-center">' . $value . '</header><div class="content"><div class="remainder"><div class="ws-activity-container remainder"></div></div></div></div>';

@@ -56,7 +56,7 @@
           'observations' => $observations,
           'comments' => $comments,
           'favourite' => $favourite,
-          'age' => $age,
+          'age' => join(',',$age),
           'activities' => $activities
       );
       break;     

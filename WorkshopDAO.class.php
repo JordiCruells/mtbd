@@ -11,7 +11,8 @@ class WorkshopDAO {
     }
 
     public function create($workshop) {
-       
+
+        
         $query = 'INSERT INTO wp_musicteach_workshop (workshop_date , group_id, observations, comments, favourite, age) values';
         $query .= '(?,?,?,?,?,?)';  
         $stmt = $this->_conn->prepare($query);
@@ -38,7 +39,7 @@ class WorkshopDAO {
 
         $stmt = $this->_conn->prepare($query);
         $stmt->bind_param('sissssi', 
-                          $workshop['workshop_date '], 
+                          $workshop['workshop_date'], 
                           $workshop['group_id'], 
                           $workshop['observations'],
                           $workshop['comments'],
@@ -66,24 +67,67 @@ class WorkshopDAO {
           $stmt->execute();
           $stmt->bind_result($sel_id, $sel_workshop_date , $sel_group_id, $sel_observations, $sel_comments, $sel_favourite, $sel_age);
           
+       
           if ($row = $stmt->fetch()) {
+
             $workshop = array('id' => $sel_id,
-                              'workshop_date ' => $sel_workshop_date ,
+                              'workshop_date' => $sel_workshop_date ,
                               'group_id' => $sel_group_id,                              
                               'observations' => $sel_observations,
                               'comments' => $sel_comments,                           
                               'favourite' => $sel_favourite,        
                               'age' => $sel_age
-              );
+            );
+
           } else {
+            
             $workshop = array();
           }
 
           $stmt->close();                 
         }
 
+        $workshop['activity'] = $this->get_activities($id);
+
         return $workshop;
         
+     }
+
+
+     private function get_activities($id) {
+
+        $query_activities = 'SELECT A.id, A.workshop_id , A.workshop_block, A.activity_id, B.activity_name, B.description, B.goals, B.materials, B.observations, B.assesment, B.comments, B.keywords, B.types, B.song_themes, B.ages FROM wp_musicteach_workshop_activity A JOIN wp_musicteach_activity B ON A.activity_id = B.id WHERE A.workshop_id = ? order by A.id' ;
+
+        $stmt = $this->_conn->stmt_init();
+
+        if (!$stmt->prepare($query_activities)) {
+          $activities = array();
+        } else {
+          $stmt->bind_param('i', $id);
+          $stmt->execute();
+          $stmt->bind_result($sel_id, $sel_workshop_id, $sel_workshop_block, $sel_activity_id,
+                             $sel_activity_name, $sel_description, $sel_goals, $sel_materials, $sel_observations, $sel_assesment, $sel_comments, $sel_keywords, $sel_types, $sel_song_themes, $sel_ages
+                             );                 
+          $activities = array();
+          while ($row = $stmt->fetch()) {
+             $activity = array('id' => $sel_activity_id,
+                              'activity_name' => $sel_activity_name,
+                              'description' => $sel_description,
+                              'goals' => $sel_goals,
+                              'materials' => $sel_materials,
+                              'observations' => $sel_observations,
+                              'assesment' => $sel_assesment,
+                              'comments' => $sel_comments,
+                              'keywords' => $sel_keywords,
+                              'types' => $sel_types,
+                              'song_themes' => $sel_song_themes,
+                              'ages' => $sel_ages
+             );
+             $activities[$sel_workshop_block][$sel_activity_id] = $activity;
+          } 
+          $stmt->close();                 
+        }
+        return $activities;
      }
 
       public function delete($id) {

@@ -52,9 +52,9 @@ if ($action === 'update') {
           'observations' => '',
           'comments' => '',
           'favourite' => '',
-          'age' => ''
+          'age' => '',
+          'activity' => array()
       );
-  $activities = array();
 }
 
 $groupDAO = new GroupDAO($conn);
@@ -114,11 +114,22 @@ include 'head.html';
           <label>Estructura del taller (desplaça els blocs necessaris a la part inferior i a continuació clica a cada bloc per afegir-hi activitats) </label>
         </div>        
         <br>
-        <div><?php workshop_blocks(); ?></div>
+        <div><?php workshop_blocks($workshop['activity']); ?></div>
         <hr>
         <div>
-          <div id="ws-blocks" >
-            <div class="remainder"><div class="ws-block-container remainder" draggable="true"></div></div>            
+          <div id="ws-blocks" >            
+            <?php 
+              foreach ($workshop['activity'] as $block_id => $activities) {
+                block_wrapper_start($block_id);
+                foreach ($activities as $activity_id => $activity) {
+                    activity_wrapper($block_id, $activity);
+                }
+                activity_remainder();
+                block_wrapper_end($block_id);
+              }
+              block_remainder();
+              //<div class="remainder"><div class="ws-block-container remainder" draggable="true"></div></div>            
+            ?>
           </div>
         </div>
   </div>
@@ -155,7 +166,7 @@ include 'head.html';
              <?php echo (!empty($workshop['favourite']) &&  $workshop['favourite'] !== 'n') ? ' checked ' : ''; ?> 
           ><label> &nbsp;Marcar com a favorit ?</label>        
          <label> &nbsp;&nbsp;Per a quines edats ?</label>     
-         <?php checkboxes($ages,'age[]', $workshop['age'], ''); ?>       
+         <?php checkboxes($ages,'age[]', $workshop['age']); ?>  
        </div>
   </div>
 

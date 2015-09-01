@@ -36,8 +36,7 @@
        <select name="search_types[]" class="form-control" multiple>
         <?php options($types, $search_types); ?>
        </select> 
-       </div>
-       
+       </div>       
      </div>
 
      <div id="age-select" class="col-xs-2 col-ld-1 xs-low-pad">

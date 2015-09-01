@@ -133,6 +133,39 @@ class GroupDAO {
 
       }
 
+      public function getAllGroups() {
+
+
+        $query = 'SELECT id, name, age, date_start, date_end, location, observations, comments FROM wp_musicteach_group ' ;
+
+        $stmt = $this->_conn->stmt_init();
+        $groups = array();
+
+        if ($stmt->prepare($query)) {
+
+          //$stmt->bind_param('i', $id);
+          $stmt->execute();
+          $stmt->bind_result($sel_id, $sel_name, $sel_age, $sel_date_start, $sel_date_end, $sel_location, $sel_observations, $sel_comments);
+          
+          while ($row = $stmt->fetch()) {
+            $groups[] = array('id' => $sel_id,
+                              'name' => $sel_name,
+                              'age' => $sel_age,
+                              'date_start' => $sel_date_start,
+                              'date_end' => $sel_date_end,
+                              'location' => $sel_location,
+                              'observations' => $sel_observations,
+                              'comments' => $sel_comments                           
+              );
+          } 
+
+          $stmt->close();                 
+        }
+
+        return $groups;
+
+      }
+
 
       public function getCurrentGroupsKeysAndNames() {
         
@@ -151,6 +184,20 @@ class GroupDAO {
         return $result;
 
       }
+
+      public function getAllGroupsKeysAndNames() {
+        
+        $groups = $this->getAllGroups();
+        $result = array();
+
+        for ($i=0; $i < count($groups) ; $i++) { 
+            $result[$groups[$i]['id']] = $groups[$i]['name'];
+        }
+
+        return $result;
+
+      }
+
 
 }
 

@@ -36,7 +36,9 @@
 
     // INITIALIZE EVENTS FOR SEARCH FORMS AND LISTS
     //----------------------------------------
-    listsEvents.init(document.querySelector('.form-list'), [DragAndDropManager] ); 
+    if (document.querySelector('.form-list')) {
+        listsEvents.init(document.querySelector('.form-list'), [DragAndDropManager] ); 
+    }
     // --------------------------
     //
 
