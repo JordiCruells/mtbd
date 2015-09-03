@@ -74,7 +74,7 @@ include 'head.html';
 ?>
 
 
-<div class="toggle-panel-shrink">
+<div class="toggle-panel-shrink form-page">
 
 <h1 class="text-center"><?php echo $title; ?></h1>
 

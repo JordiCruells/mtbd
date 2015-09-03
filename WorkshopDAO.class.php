@@ -55,8 +55,8 @@ class WorkshopDAO {
 
       public function select($id) {
         
-        $query = 'SELECT id, workshop_date , group_id, observations, comments, favourite, age FROM wp_musicteach_workshop ' ;
-        $query .= 'WHERE id = ?';
+        $query = 'SELECT A.id, A.workshop_date , A.group_id, A.observations, A.comments, A.favourite, A.age, B.name FROM wp_musicteach_workshop A JOIN wp_musicteach_group B ON A.group_id = B.id ' ;
+        $query .= ' WHERE A.id = ?';
 
         $stmt = $this->_conn->stmt_init();
         if (!$stmt->prepare($query)) {
@@ -65,7 +65,7 @@ class WorkshopDAO {
 
           $stmt->bind_param('i', $id);
           $stmt->execute();
-          $stmt->bind_result($sel_id, $sel_workshop_date , $sel_group_id, $sel_observations, $sel_comments, $sel_favourite, $sel_age);
+          $stmt->bind_result($sel_id, $sel_workshop_date , $sel_group_id, $sel_observations, $sel_comments, $sel_favourite, $sel_age, $sel_group_name);
           
        
           if ($row = $stmt->fetch()) {
@@ -76,7 +76,8 @@ class WorkshopDAO {
                               'observations' => $sel_observations,
                               'comments' => $sel_comments,                           
                               'favourite' => $sel_favourite,        
-                              'age' => $sel_age
+                              'age' => $sel_age,
+                              'group_name' => $sel_group_name
             );
 
           } else {

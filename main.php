@@ -140,7 +140,7 @@
              '<div></div>' .
            '</div>' .
            '<input type="hidden" value="1" name="activity[' . $block_id . '][' . $activity['id'] . ']">' .
-           '<div class="ws-activity" data-id="' . $activity['id'] . '" draggable="true">' . $activity['activity_name'] . '</div>' .
+           '<div class="ws-activity pastels-' . $block_id . '" data-id="' . $activity['id'] . '" draggable="true">' . $activity['activity_name'] . '<div class="more">' . nl2br($activity['description']) . '</div></div>' .
          '</div>';
   }
 
@@ -151,12 +151,13 @@
   }
 
 
-  function block_wrapper_start($block_id) {
+  function block_wrapper_start($block_id, $ord=0) {
      global $types;
+     $order = $ord > 0 ? '<span class="order">' . $ord . '.</span>' : '';
      echo '<div class="ws-block-wrapper" draggable="true">' .
             '<div class="ws-block-container" draggable="true"></div>' .
-            '<div class="ws-block toggle-panel-click" draggable="true" data-id="' . $block_id . '" data-toggle-panel-id="search-box">' .
-              '<header class="ws-title text-center">' . $types[$block_id] . '</header>' .
+            '<div class="ws-block toggle-panel-click pastels-' . $block_id. '" draggable="true" data-id="' . $block_id . '" data-toggle-panel-id="search-box">' .
+              '<header class="ws-title text-center">' . $order . $types[$block_id] . '</header>' .
               '<div class="content">';
   }
 
@@ -195,7 +196,7 @@
     foreach ($blocks as $key => $value) {       
       echo '<div class="ws-block-wrapper" draggable="true">';
          echo '<div class="ws-block-container" draggable="true"></div>';
-         echo '<div class="ws-block" data-id="' . $key . '" draggable="true"><header class="ws-title text-center">' . $value . '</header><div class="content"><div class="remainder"><div class="ws-activity-container remainder"></div></div></div></div>';
+         echo '<div class="ws-block pastels-' . $key . '" data-id="' . $key . '" draggable="true"><header class="ws-title text-center">' . $value . '</header><div class="content"><div class="remainder"><div class="ws-activity-container remainder"></div></div></div></div>';
       echo '</div>';
     }
     echo '<div class="remainder"><div class="ws-block-container remainder" draggable="true"></div></div></div>';
@@ -278,7 +279,7 @@
 
     //return ((count($song_themes) > 1) ? ' | Temàtiques: ' : ' | Temàtica: ') . '<span class="text-primary">' . join(', ', $song_themes) . '</span>';
     //return ' &nbsp;<span class="glyphicon glyphicon-music"></span> Cançó ' . strtolower(join(', ', $song_themes));
-    return '<span class="' . $class . '"> <label class="fill rounded grey"><span class="glyphicon glyphicon-picture"></span></label> cançó ' . mb_strtolower(join(', ', $song_themes)) . "</span>";
+    return '<span class="' . $class . '"> <label class="fill rounded grey"><span class="glyphicon glyphicon-picture"></span></label> cançó ' . mb_strtolower(join(', ', $song_themes), "UTF-8") . "</span>";
   
   }
 
@@ -289,7 +290,7 @@
     $song_themes = array_map('get_song_theme',$ids);
     if (count($song_themes) === '') return ''; */
 
-    return '<span class="' . $class . '"> <label class="fill rounded blue blue"><span class="glyphicon glyphicon-wrench"></span></label> ' . mb_strtolower($str) . "</span>";
+    return '<span class="' . $class . '"> <label class="fill rounded blue blue"><span class="glyphicon glyphicon-wrench"></span></label> ' . mb_strtolower($str, "UTF-8") . "</span>";
   
   }
 

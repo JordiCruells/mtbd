@@ -254,10 +254,8 @@
               // Register click toggle events
               $root.find(opts.selClick).andSelf().filter(opts.selClick).each(function(index, el) {
                 $el = $(el);
-                console.log('click toggle ' + $el.get(0) + ' | ' + $el.get(0).className);
                 var $targetPanel = $('#' + $el.data(opts.selIdRefPanel));
-                console.log('target click is '  + $targetPanel.get(0) + ' | ' + $targetPanel.get(0).className);
-
+                
                 if ($targetPanel.length === 1 && findPanelByRef($targetPanel)) {
                   console.log('register click toggle '); 
                   $el.click(toggle($targetPanel));
