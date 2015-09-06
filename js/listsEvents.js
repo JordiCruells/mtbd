@@ -15,8 +15,8 @@
           $switchListMode,
           model;
 
-      var getRefreshURL = function() {
-        return config.getPath(model, 'list', appendQueryParams($(searchForm).serialize(), formValues(refreshListForm)));
+      var getRefreshURL = function(queryString) {
+        return config.getPath(model, 'list', queryString);
       };
 
       thisObject.init = function(rootNode, initiators) { // Initiators are methods which init method must run after a new fresh list has beeen loaded
@@ -32,7 +32,8 @@
 
             e.preventDefault();
             $refresh =  $('.refreshable.list');
-            ajaxRefresh(getRefreshURL(), $refresh, function() {
+            var queryString = appendQueryParams($(searchForm).serialize(), formValues(refreshListForm));
+            ajaxRefresh(getRefreshURL(queryString), $refresh, function() {
               thisObject.init(rootNode, initiators); // initialize list and search form events
               initiators.forEach(function(initiator) { // initialize other events or features
                  initiator.init(rootNode);
@@ -40,6 +41,22 @@
             });
 
           });
+
+          // pagination links must be followewd in ajax
+          $('.pagination a').click(function(e) {
+            e.preventDefault();
+            var queryString =  $(this).attr('href').substring(1);
+            alert('urk ' + queryString);
+            $refresh =  $('.refreshable.list');
+            ajaxRefresh(getRefreshURL(queryString), $refresh, function() {
+              thisObject.init(rootNode, initiators); // initialize list and search form events
+              initiators.forEach(function(initiator) { // initialize other events or features
+                 initiator.init(rootNode);
+              });
+            });
+            return false;
+          });
+
               
           $('.list-limit-change').change(function() {
              searchForm.elements.namedItem('limit').value = $(this).val();
@@ -72,10 +89,12 @@
               
               switch(action) {
                   case 'view':
-                     window.location.href = config.getPath(model, 'view', id);
+                     //window.location.href = config.getPath(model, 'view', id);
+                     window.open(config.getPath(model, 'view', id));
                      break;
                   case 'update':
-                     window.location.href = config.getPath(model, 'update', id);
+                     //window.location.href = config.getPath(model, 'update', id);
+                     window.open(config.getPath(model, 'update', id));
                      break;
                   case 'delete':
                      if (confirm("Segur que vols eliminar el registre seleccionat ?")) {
@@ -90,7 +109,8 @@
           $('.context').click(function() {
               var id = $(this).data('id');
               var model = $(this).data('model');
-              window.location.href = config.getPath(model, 'view', id);
+              //window.location.href = config.getPath(model, 'view', id);
+              window.open(config.getPath(model, 'view', id));
           });
           
 
