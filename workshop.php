@@ -32,7 +32,7 @@
       $group_id = isset($_POST['group_id']) ?  $_POST['group_id'] : 0;
       $observations = isset($_POST['observations']) ?  $_POST['observations'] : '';
       $comments = isset($_POST['comments']) ?  $_POST['comments'] : '';
-      $age = isset($_POST['age']) ?  $_POST['age'] : '';
+      $age = isset($_POST['age']) ?  $_POST['age'] : array();
       $favourite = isset($_POST['favourite']) ?  $_POST['favourite'] : '';
 
       if (empty($group_id)) {

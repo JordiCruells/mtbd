@@ -33,15 +33,15 @@
     <div class="ajax-loader"><div></div></div>
     <table class="table list expanded">
 
-      <thead>
+     <?php 
+       /*<thead>
         <tr>        
           <th class="corner-left col-xs-6" width="">Descripció del procés </th>
           <th class="corner-right col-xs-3">Pautes d'observació </th>
           <th class="corner-right col-xs-3">Valoració </th>        
-          <?php /*<th class="corner-right">Paraules clau </th> */ ?>
-          
         </tr>
-      </thead>
+      </thead> */
+      ?>
 
       <tbody class="ajax-mask">  
 
@@ -74,9 +74,9 @@
               </td>
             </tr>
             <tr class="context relative content" data-toggle="context" data-target="#context-menu" data-model="activity" data-id="<?php echo $results->data[$i]['id']; ?>">
-                  <td><div class="hover expand"><?php echo  nl2br($results->data[$i]['description']); ?></div></td>
-                  <td><div class="hover expand"><?php echo  nl2br($results->data[$i]['observations']); ?></div></td>
-                  <td><div class="hover expand"><?php echo  nl2br($results->data[$i]['assesment']); ?></div></td>
+                  <td><div><div class="heading">Descripció del procés</div><div class="column-content hover expand"><?php echo  nl2br($results->data[$i]['description']); ?></div></div></td>
+                  <td><div><div class="heading">Pautes d'observació</div><div class="column-content hover expand"><?php echo  nl2br($results->data[$i]['observations']); ?></div></div></td>
+                  <td><div><div class="heading">Valoració</div><div class="column-content hover expand"><?php echo  nl2br($results->data[$i]['assesment']); ?></div></div></td>
                   <?php /*<td><?php echo $results->data[$i]['keywords']; ?></td> */ ?>
                    
             </tr>

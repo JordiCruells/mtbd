@@ -6,15 +6,10 @@
 
 
 .relative {position: relative;}
-/*@media (min-width: 1400px) {
+@media (min-width: 1400px) {
   .container {
     width: 1370px;
   }
-}*/
-
-.container {
-  width: 100%;
-  padding: 0 40px;
 }
 
 body > .container {background: #fff; padding: 0 20px}
@@ -29,6 +24,10 @@ span.theme {background-color: #fefff2}
 span.material {background-color: #fffaf4}
 span.songs {background-color: #ddfaf4}
 */
+
+
+.inline.radio {display: inline-block; margin-right: 10px;}
+.inline.radio > input[type=radio] {margin-left: 0;}
 
 label.fill.rounded {
   border-radius: 5px;
@@ -82,6 +81,7 @@ table.list.expanded tr.content {display: table-row;}
 
 table.list tr.content .hover.expand {overflow:hidden; max-height: 120px; min-height: 0}
 table.list tr.content .hover.expand:hover {overflow:auto; background: #fff}
+table.list tr.content .heading {font-weight: bold}
 
 .table-bordered > thead > tr > th {
   background: #ddd none repeat scroll 0 0;
@@ -140,7 +140,7 @@ div:hover>.row-controls {display: block}
 .ws-block, .ws-block-wrapper {margin: 0; float:left;}
 .ws-block-wrapper {margin-bottom: 10px;}
 
-.view-page .ws-blocks {display: flex;} 
+.view-page .ws-blocks {display: flex; flex-direction: column;} 
 .view-page .ws-blocks .ws-block-wrapper {flex-grow:1; flex-basis:0;}
 .view-page .ws-blocks .ws-block-wrapper .ws-block {width:100%;}
 
@@ -195,7 +195,7 @@ div:hover>.row-controls {display: block}
 .ws-block>.content { 
    padding: 5px; 
 }
-.form-page .ws-block>.content {
+.form-page .ws-block>.content  {
   height: 200px; overflow: auto;
 }
 

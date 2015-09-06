@@ -23,6 +23,110 @@
     '13' => 'No classificat'
   );
 
+  $song_themes = array(
+        '1' => "Moixaina",
+        '2' => "Falda/joc de falda",
+        '3' => "De bressol",
+        '4' => "Mimada",
+        '5' => "De diada",
+        '6' => "Eliminativa",
+        '7' => "Màgica / Temps i natura",
+        '8' => "D’ofici",
+        '9' => "De dansa/joc",
+        '10' => "En anglès",
+        '11' => "Instrumentada",
+        '12' => "D'animals",
+        '13' => "Del cos",
+        '14' => "Altres cançons"
+  );
+
+  $sub_types = array(
+    '1' => array(
+        '1' => "Moixaina",
+        '2' => "Falda/joc de falda",
+        '3' => "De bressol",
+        '4' => "Mimada",
+        '5' => "De diada",
+        '6' => "Eliminativa",
+        '7' => "Màgica / Temps i natura",
+        '8' => "D’ofici",
+        '9' => "De dansa/joc",
+        '10' => "En anglès",
+        '11' => "Instrumentada",
+        '12' => "D'animals",
+        '13' => "Del cos",
+        '14' => "Altres cançons"),
+    '2' => array(
+        '1' => 'Instruments categoria 1',
+        '1' => 'Instruments categoria 2'
+    ),
+    '3' => array(
+        '1' => 'Audició categoria 1',
+        '1' => 'Audició categoria 2'
+    ),
+    '4' => array(
+        '1' => 'Descoberta de sons categoria 1',
+        '1' => 'Descoberta de sons categoria 2'
+    ),
+    /*'5' => array(
+        '1' => 'Instruments categoria 1',
+        '1' => 'Instruments categoria 2'
+    ),*/
+    '6' => array(
+        '1' => 'Música associada a un moviment categoria 1',
+        '1' => 'Música associada a un moviment categoria 2'
+    ),
+    /*'7' => array(
+        '1' => 'Instruments categoria 1',
+        '1' => 'Instruments categoria 2'
+    ),*/
+    '8' => array(
+        '1' => 'Ritme-pulsacio categoria 1',
+        '1' => 'Ritme-pulsacio categoria 2'
+    ),
+    '9' => array(
+        '1' => 'De dansa/joc categoria 1',
+        '1' => 'De dansa/joc categoria 2'
+    ),
+    '10' => array(
+        '1' => 'Ritme-motriu categoria 1',
+        '1' => 'Ritme-motriu categoria 2'
+    ),
+    '11' => array(
+        '1' => 'Ritme-figures categoria 1',
+        '1' => 'Ritme-figures categoria 2'
+    ),
+    '12' => array(
+        '1' => "D'animals categoria 1",
+        '1' => "D'animals categoria 2"
+    ),
+    '13' => array(
+        '1' => 'No classificat categoria 1',
+        '1' => 'No classificat categoria 2'
+    ),
+    '14' => array(
+        '1' => 'So-silenci categoria 1',
+        '1' => 'So-silenci categoria 2'
+    ),
+    '15' => array(
+        '1' => 'Intensitat categoria 1',
+        '1' => 'Intensitat categoria 2'
+    ),
+    '16' => array(
+        '1' => 'Durada categoria 1',
+        '1' => 'Durada categoria 2'
+    ),
+    '17' => array(
+        '1' => 'Alçada categoria 1',
+        '1' => 'Alçada categoria 2'
+    ),
+    '18' => array(
+        '1' => 'La nostra cultura categoria 1',
+        '1' => 'La nostra cultura categoria 2'
+    )
+
+  );
+
 
   $materialsIds = array(
 
@@ -63,22 +167,7 @@
     )    
   );
 
-  $song_themes = array(
-    '1' => "Moixaina",
-    '2' => "Falda/joc de falda",
-    '3' => "De bressol",
-    '4' => "Mimada",
-    '5' => "De diada",
-    '6' => "Eliminativa",
-    '7' => "Màgica / Temps i natura",
-    '8' => "D’ofici",
-    '9' => "De dansa/joc",
-    '10' => "En anglès",
-    '11' => "Instrumentada",
-    '12' => "D'animals",
-    '13' => "Del cos",
-    '14' => "Altres cançons"
-  );
+  
 
 
   $ages = array(
@@ -324,15 +413,16 @@
     echo $html;
   }
 
-function checkboxes($arr, $name, $checkeds='') {
+function checkboxes($arr, $name, $checkeds='' , $required='') {
 
     $arrCheckeds = explode(',', $checkeds); 
     if (sizeof($arr) > 0) {
       foreach ($arr as $key => $value) {
         echo "<div style='display:inline-block'><input class='form-inline' type='checkbox' name='{$name}' value='{$key}'";
         if (in_array($key, $arrCheckeds)) {
-           echo " checked";
+           echo " checked ";
         }
+        echo $required;
         echo "/>&nbsp{$value} &nbsp;&nbsp; </div>";
       }
     }
@@ -341,7 +431,7 @@ function checkboxes($arr, $name, $checkeds='') {
  function radiobuttons($arr, $name, $checked='', $class='') {
 
 
-    $class = empty($class) ? "" : " class=" . $class;
+    $class = empty($class) ? '' : ' class="' . $class . '"';
 
     if (sizeof($arr) > 0) {
 
