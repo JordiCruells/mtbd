@@ -93,6 +93,7 @@
         break;
 
      case 'delete':
+        $workshopDAO->unlinkActivities($id);
         $workshopDAO->delete($id);
         header("Location: http://www.mondemusica.com/music-teach/workshop_list.php?r=".mt_rand(0, 9999999));
         break;    

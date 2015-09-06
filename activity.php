@@ -118,6 +118,7 @@
         break;
      case 'delete':
         //echo 'delete dao'.$id; exit;
+        $songDAO->unlinkFromActivity($id);
         $activityDAO->delete($id);
         header("Location: http://www.mondemusica.com/music-teach/activity_list.php?r=".mt_rand(0, 9999999));
         break;    
