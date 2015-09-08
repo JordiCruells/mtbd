@@ -46,7 +46,6 @@
           $('.pagination a').click(function(e) {
             e.preventDefault();
             var queryString =  $(this).attr('href').substring(1);
-            alert('urk ' + queryString);
             $refresh =  $('.refreshable.list');
             ajaxRefresh(getRefreshURL(queryString), $refresh, function() {
               thisObject.init(rootNode, initiators); // initialize list and search form events
