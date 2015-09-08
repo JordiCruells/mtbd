@@ -93,7 +93,9 @@ class SchedulingDAO {
 
      private function get_activities($id) {
 
-        $query_activities = 'SELECT A.id, A.scheduling_id , A.scheduling_block, A.activity_id, B.activity_name, B.description, B.goals, B.materials, B.observations, B.assesment, B.comments, B.keywords, B.types, B.song_themes, B.ages FROM wp_musicteach_scheduling_activity A JOIN wp_musicteach_activity B ON A.activity_id = B.id WHERE A.scheduling_id = ? order by A.id' ;
+        //$query_activities = 'SELECT A.id, A.scheduling_id , A.scheduling_block, A.activity_id, B.activity_name, B.description, B.goals, B.materials, B.observations, B.assesment, B.comments, B.keywords, B.types, B.song_themes, B.ages FROM wp_musicteach_scheduling_activity A JOIN wp_musicteach_activity B ON A.activity_id = B.id WHERE A.scheduling_id = ? order by A.id' ;
+        $query_activities = "SELECT  A.id, A.scheduling_id , A.scheduling_block, A.activity_id, B.activity_name, B.description, B.goals, B.materials, B.observations, B.assesment, B.comments, B.keywords, B.types, B.song_themes, B.ages, GROUP_CONCAT(D.name, ' ,') as songs FROM wp_musicteach_scheduling_activity A JOIN wp_musicteach_activity B ON A.activity_id = B.id JOIN wp_musicteach_activity_song C ON B.id = C.activity_id JOIN wp_musicteach_song D ON C.song_id = D.id WHERE A.scheduling_id = ? GROUP BY  A.id, A.activity_id order by A.id, A.activity_id, C.song_id ";
+
 
         $stmt = $this->_conn->stmt_init();
 
@@ -103,7 +105,7 @@ class SchedulingDAO {
           $stmt->bind_param('i', $id);
           $stmt->execute();
           $stmt->bind_result($sel_id, $sel_scheduling_id, $sel_scheduling_block, $sel_activity_id,
-                             $sel_activity_name, $sel_description, $sel_goals, $sel_materials, $sel_observations, $sel_assesment, $sel_comments, $sel_keywords, $sel_types, $sel_song_themes, $sel_ages
+                             $sel_activity_name, $sel_description, $sel_goals, $sel_materials, $sel_observations, $sel_assesment, $sel_comments, $sel_keywords, $sel_types, $sel_song_themes, $sel_ages, $sel_songs
                              );                 
           $activities = array();
           while ($row = $stmt->fetch()) {
@@ -118,7 +120,8 @@ class SchedulingDAO {
                               'keywords' => $sel_keywords,
                               'types' => $sel_types,
                               'song_themes' => $sel_song_themes,
-                              'ages' => $sel_ages
+                              'ages' => $sel_ages,
+                              'songs' => $sel_songs
              );
              $activities[$sel_scheduling_block][$sel_activity_id] = $activity;
           } 

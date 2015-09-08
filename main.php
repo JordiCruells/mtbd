@@ -222,14 +222,21 @@
   }
 
 
-  function activity_wrapper($block_id, $activity) {
+  function activity_wrapper($block_id, $activity, $summary=false) {
+
+    $more = $summary ? '' : '<div class="more">' . 
+                                '<div class="field description"><header>Descripció</header><div>' . nl2br($activity['description']) . '</div></div>' . 
+                                '<div class="field songs"><header>Pistes</header><div>' . nl2br($activity['songs']) . '</div></div>' . 
+                                '<div class="field materials"><header>Materials</header><div>' . nl2br($activity['materials']) . '</div></div>' .
+                                '<div class="field observations"><header>Observacions</header><div>' . nl2br($activity['observations']) . '</div></div>' .
+                             '</div>';
 
     echo '<div class="ws-activity-wrapper" draggable="true">' .
            '<div class="ws-activity-container" draggable="true">' .
              '<div></div>' .
            '</div>' .
            '<input type="hidden" value="1" name="activity[' . $block_id . '][' . $activity['id'] . ']">' .
-           '<div class="ws-activity pastels-' . $block_id . '" data-id="' . $activity['id'] . '" draggable="true">' . $activity['activity_name'] . '<div class="more">' . nl2br($activity['description']) . '</div></div>' .
+           '<div class="ws-activity pastels-' . $block_id . '" data-id="' . $activity['id'] . '" draggable="true">' . $activity['activity_name'] . $more . '</div>' .
          '</div>';
   }
 
@@ -242,11 +249,11 @@
 
   function block_wrapper_start($block_id, $ord=0) {
      global $types;
-     $order = $ord > 0 ? '<span class="order">' . $ord . '.</span>' : '';
+     $order = $ord > 0 ? '<span class="order">' . $ord . '. </span>' : '';
      echo '<div class="ws-block-wrapper" draggable="true">' .
             '<div class="ws-block-container" draggable="true"></div>' .
             '<div class="ws-block toggle-panel-click pastels-' . $block_id. '" draggable="true" data-id="' . $block_id . '" data-toggle-panel-id="search-box">' .
-              '<header class="ws-title text-center">' . $order . $types[$block_id] . '</header>' .
+              '<header class="ws-title text-center"><div>' . $order . $types[$block_id] . '</div></header>' .
               '<div class="content">';
   }
 
@@ -285,7 +292,7 @@
     foreach ($blocks as $key => $value) {       
       echo '<div class="ws-block-wrapper" draggable="true">';
          echo '<div class="ws-block-container" draggable="true"></div>';
-         echo '<div class="ws-block pastels-' . $key . '" data-id="' . $key . '" draggable="true"><header class="ws-title text-center">' . $value . '</header><div class="content"><div class="remainder"><div class="ws-activity-container remainder"></div></div></div></div>';
+         echo '<div class="ws-block pastels-' . $key . '" data-id="' . $key . '" draggable="true"><header class="ws-title text-center"><div>' . $value . '</div></header><div class="content"><div class="remainder"><div class="ws-activity-container remainder"></div></div></div></div>';
       echo '</div>';
     }
     echo '<div class="remainder"><div class="ws-block-container remainder" draggable="true"></div></div></div>';

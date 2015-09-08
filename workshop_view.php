@@ -32,7 +32,7 @@ include 'head.html';
 
 <div class="row">
 
-    <div class="col-xs-offset-2 col-xs-8 col-xs-offset-2 view-page">
+    <div class="col-xs-12 view-page">
 
       <h1>Fitxa de taller</h1>
 
@@ -53,7 +53,12 @@ include 'head.html';
           <td><?php echo $workshop['observations']; ?></td>
         </tr>
 
-       <tr>
+        <tr>
+          <td>Comentaris</td>
+          <td><?php echo $workshop['comments']; ?></td>
+        </tr>
+
+       <?php /*<tr>
           <td>Marcat com a favorit ?</td>
           <td><?php echo ($workshop['favourite'] === 'y') ? 'Sí' : 'No'; ?></td>
         </tr>
@@ -62,9 +67,29 @@ include 'head.html';
           <td>Edats recomanades</td>
           <td><?php list_ages($workshop['age']); ?></td>
         </tr>        
+        */ ?>
+
      </table> 
 
-     <h3>Estructura</h3> 
+     <h3>Resum</h3> 
+      <div class="ws-blocks summary">            
+            <?php 
+              $ord = 1;
+              foreach ($workshop['activity'] as $block_id => $activities) {
+                block_wrapper_start($block_id, $ord);
+                foreach ($activities as $activity_id => $activity) {
+                    activity_wrapper($block_id, $activity, true);
+                }
+                activity_remainder();
+                block_wrapper_end($block_id);
+                $ord += 1;
+              }
+              block_remainder();
+              //<div class="remainder"><div class="ws-block-container remainder" draggable="true"></div></div>            
+            ?>
+      </div>     
+
+      <h3>Detall</h3> 
       <div class="ws-blocks">            
             <?php 
               $ord = 1;
@@ -81,8 +106,6 @@ include 'head.html';
               //<div class="remainder"><div class="ws-block-container remainder" draggable="true"></div></div>            
             ?>
       </div>     
-
-
       
     
       <div class="row text-center">

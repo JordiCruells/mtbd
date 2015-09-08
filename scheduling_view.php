@@ -31,7 +31,7 @@ include 'head.html';
 
 <div class="row">
 
-    <div class="col-xs-offset-2 col-xs-8 col-xs-offset-2 view-page">
+    <div class="col-xs-12 view-page">
 
       <h1>Fitxa de planificació </h1>
 
@@ -53,7 +53,19 @@ include 'head.html';
         </tr>        
      </table> 
 
-     <h3>Activitats per blocs</h3> 
+     <h3>LLista d'activitats</h3> 
+     <ul>
+     <?php 
+        foreach ($scheduling['activity'] as $block_id => $activities) 
+        {
+         foreach ($activities as $activity_id => $activity) {
+           echo '<li>' . $activity['activity_name'] . '</li>';
+          }
+        }
+      ?>
+     </ul>
+
+     <h3>Planificació per blocs</h3> 
       <div class="ws-blocks">            
             <?php 
               $ord = 1;
