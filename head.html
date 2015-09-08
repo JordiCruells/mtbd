@@ -50,7 +50,7 @@
 
             <li class="active"><a href="/">Inici</a></li>
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Activitats <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="activity_list.php?<?php echo 'r= ' . mt_rand(0, 9999999); ?>">Activitats <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="activity_list.php?<?php echo 'r= ' . mt_rand(0, 9999999); ?>">Cercar</a></li>
                 <li><a href="activity_form.php">Afegir</a></li>                        
@@ -75,6 +75,13 @@
               <ul class="dropdown-menu">
                 <li><a href="group_list.php?<?php echo 'r= ' . mt_rand(0, 9999999); ?>">Cercar</a></li>
                 <li><a href="group_form.php">Afegir</a></li>                        
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Famílies <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="customer_list.php?<?php echo 'r= ' . mt_rand(0, 9999999); ?>">Cercar</a></li>
+                <li><a href="customer_form.php">Afegir</a></li>                        
               </ul>
             </li>
             
