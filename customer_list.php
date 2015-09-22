@@ -35,7 +35,7 @@ if (isAjaxRequest()) {
   include 'include_list_customers.php';  
 } else {
 
-  include 'head.html'; ?>
+  include 'head.php'; ?>
   <h1 class="text-center">Cercador de famílies</h1>
   <div id="form-list" class="form-list" data-model="customer"> 
     <?php 
@@ -44,7 +44,7 @@ if (isAjaxRequest()) {
     ?>
   </div>
 <?php
-  include 'foot.html'; 
+  include 'foot.php'; 
 }
 
 ?>

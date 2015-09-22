@@ -3,31 +3,19 @@
   error_reporting(E_ALL);
   
   ini_set("display_errors", 1);
-
+  require_once 'main.php';
   require_once 'Connection.class.php';
   require_once 'CustomerDAO.class.php';
 
-  if (isset($_POST['action'])) 
-    {
-      $action = $_POST['action'];
-    } 
+  $response = array('status'=>'1', 'message' => '');
+  $isAjax = isAjaxRequest();
 
-  else 
+  $action = from_post_or_get('action','');
 
-  {
-
-    if (isset($_GET['action'])) 
-    {
-      $action = $_GET['action'];
-    }
-
-  }
-  
   if (!isset($action)) {
     die('accio no informada'); exit;
   }
  
-
   $id = -1;
   
   if ($action !== 'new' && $action !== 'update' && $action !== 'delete') {
@@ -74,18 +62,20 @@
 
      case 'new':        
         $insert_id = $customerDAO->create($customer);
-        header("Location: http://www.mondemusica.com/music-teach/customer_list.php?r=".mt_rand(0, 9999999));
         break;
      case 'update':
         $customerDAO->update($customer);
-        header("Location: http://www.mondemusica.com/music-teach/customer_list.php?r=".mt_rand(0, 9999999));
         break;
      case 'delete':
         //echo 'delete dao'.$id; exit;
         $customerDAO->delete($id);
-        header("Location: http://www.mondemusica.com/music-teach/customer_list.php?r=".mt_rand(0, 9999999));
         break;    
+  }
 
+  if ($isAjax) {
+    echo json_encode($response); exit;
+  } else {
+    header("Location: http://www.mondemusica.com/music-teach/customer_list.php?r=".mt_rand(0, 9999999));
   }
 
   

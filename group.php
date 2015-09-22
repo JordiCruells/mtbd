@@ -3,40 +3,24 @@
   error_reporting(E_ALL);
   ini_set("display_errors", 1);
 
+  require_once 'main.php';
   require_once 'Connection.class.php';
   require_once 'GroupDAO.class.php';
+
+  $response = array('status'=>'1', 'message' => '');
+  $isAjax = isAjaxRequest();
   
+  $action = from_post_or_get('action','');
 
-  if (isset($_POST['action'])) 
-    {
-      $action = $_POST['action'];
-    } 
-
-  else 
-
-  {
-
-    if (isset($_GET['action'])) 
-    {
-      $action = $_GET['action'];
-    }
-
-  }
-  
   if (!isset($action)) {
     die('accio no informada'); exit;
   }
-
-
-  
 
   $id = -1;
   
   if ($action !== 'new' && $action !== 'update' && $action !== 'delete') {
     die('accio incorrecta: '.$action );
   }
-
- 
 
   switch($action) {
 
@@ -81,18 +65,20 @@
 
      case 'new':        
         $insert_id = $groupDAO->create($group);
-        header("Location: http://www.mondemusica.com/music-teach/group_list.php?r=".mt_rand(0, 9999999));
         break;
      case 'update':
-        $groupDAO->update($group);
-        header("Location: http://www.mondemusica.com/music-teach/group_list.php?r=".mt_rand(0, 9999999));
+        $groupDAO->update($group);        
         break;
      case 'delete':
         //echo 'delete dao'.$id; exit;
         $groupDAO->delete($id);
-        header("Location: http://www.mondemusica.com/music-teach/group_list.php?r=".mt_rand(0, 9999999));
         break;    
+  }
 
+  if ($isAjax) {
+    echo json_encode($response); exit;
+  } else {
+    header("Location: http://www.mondemusica.com/music-teach/group_list.php?r=".mt_rand(0, 9999999));
   }
 
   

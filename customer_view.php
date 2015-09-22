@@ -28,7 +28,7 @@ $customer = $customerDAO->select($id);
 
 $title = "Fitxa de mare / pare"; 
 
-include 'head.html'; 
+include 'head.php'; 
 
 ?>
 
@@ -62,15 +62,15 @@ include 'head.html';
       </table>
     
       <div class="row text-center">
-          <button class="btn btn-primary link" type="button" data-link="customer_form.php?id=<?php echo $id; ?>&action=update" >Modificar</span></button>
+          <button class="btn btn-primary btn-modify" type="button" data-link="customer_form.php?id=<?php echo $id; ?>&action=update" >Modificar</span></button>
           <button class="btn btn-primary" type="button">Imprimir</span></button>
-          <button class="btn btn-info link" type="button" data-link="customer_list.php">Tornar</span></button>
+          <button class="btn btn-info btn-back" type="button" data-link="customer_list.php">Tornar</span></button>
       </div>
 
     </div>
 
 </div>
 
-<?php include 'foot.html'; ?>
+<?php include 'foot.php'; ?>
 
 

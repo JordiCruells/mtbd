@@ -3,33 +3,19 @@
   error_reporting(E_ALL);
   ini_set("display_errors", 1);
 
+  require_once 'main.php';
   require_once 'Connection.class.php';
   require_once 'ActivityDAO.class.php';
   require_once 'SongDAO.class.php';
-  
 
-  if (isset($_POST['action'])) 
-    {
-      $action = $_POST['action'];
-    } 
+  $response = array('status'=>'1', 'message' => '');
+  $isAjax = isAjaxRequest();
 
-  else 
+  $action = from_post_or_get('action','');
 
-  {
-
-    if (isset($_GET['action'])) 
-    {
-      $action = $_GET['action'];
-    }
-
-  }
-  
   if (!isset($action)) {
     die('accio no informada'); exit;
-  }
-
-
-  
+  }  
 
   $id = -1;
   
@@ -37,7 +23,6 @@
     die('accio incorrecta: '.$action );
   }
 
- 
 
   switch($action) {
 
@@ -99,6 +84,7 @@
   $conn = $c->getConnection();
   $activityDAO = new ActivityDAO($conn);
   $songDAO = new SongDAO($conn);
+  $response = array('status'=>'1', 'message' => '');
 
   switch($action) {
 
@@ -107,24 +93,25 @@
         if (count($songs) > 0 ) {          
           $songDAO->createSongs($insert_id, $songs);
         }
-
-        header("Location: http://www.mondemusica.com/music-teach/activity_list.php?r=".mt_rand(0, 9999999));
         break;
      case 'update':
         $activityDAO->update($activity);
         $songDAO->unlinkFromActivity($activity['id']);
         $songDAO->createSongs($activity['id'], $songs);
-        header("Location: http://www.mondemusica.com/music-teach/activity_list.php?r=".mt_rand(0, 9999999));
         break;
      case 'delete':
         //echo 'delete dao'.$id; exit;
         $songDAO->unlinkFromActivity($id);
         $activityDAO->delete($id);
-        header("Location: http://www.mondemusica.com/music-teach/activity_list.php?r=".mt_rand(0, 9999999));
         break;    
-
   }
 
+  if ($isAjax) {
+    echo json_encode($response); 
+    exit;
+  } else {
+    header("Location: http://www.mondemusica.com/music-teach/activity_list.php?r=".mt_rand(0, 9999999));
+  }
   
 
 ?>

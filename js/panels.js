@@ -10,11 +10,15 @@
         opts.selClick  = options.selClick  || '.toggle-panel-click';
         opts.selPanel  = options.selPanel  || '.toggle-panel';
         opts.selIdRefPanel = 'toggle-panel-id';
+        opts.width = options.width  || 500;
 
         var autoclose = opts.selPanel.substr(1) + "-autoclose";
 
-        var $shrinkEls = $(opts.selShrink), // $shrinkEls references the block/s that have to be shrinked when panel toggling
+        
+
+        var $shrinkEls, // $shrinkEls references the block/s that have to be shrinked when panel toggling
             panels = [];
+
 
         var regZone = new RegExp("^" + opts.selPanel.substr(1) + "\\-(right|left|up|down)$");
         
@@ -38,7 +42,8 @@
           el.ref = $el;
           el.autoclose = false;
           el.active = false;
-          el.w = $el.width();
+          //el.w = $el.width();
+          el.w = opts.width;
           
           for (var i = 0; i < classes.length; i++) {
 
@@ -66,8 +71,11 @@
         };
 
         var findPanelByRef = function($el) {
-          console.log('in findPanelByRef');
+          console.log('in findPanelByRef ' + panels.length);
           for (var i = 0; i < panels.length; i++) {
+
+            console.log('panels[i].ref[0] ' + panels[i].ref[0]);
+            console.log('$el[0] ' + $el[0]);
             if (panels[i].ref[0] === $el[0]) {
               return panels[i];
             }
@@ -168,6 +176,9 @@
               break;
           }
 
+
+          console.log('panels push ' + panel);
+
           panels.push(panel);
 
         };
@@ -204,9 +215,18 @@
           }          
 
           $el.animate({right: op1 }, 'fast');
+
+          console.log('$shrinkEls.length ' + $shrinkEls.length);
+
           if ($shrinkEls && $shrinkEls.length > 0) {
-              $shrinkEls.animate({width: op2 }, 'fast');
+              $shrinkEls.animate({width: op2 }, 'fast', function() {
+                //In case resizing panels changes bootrap modla height
+                console.log('adjust to ' + $('.modal-content').height() + 100);
+                $('.modal-backdrop.fade.in').height($('.modal-content').height() + 100);
+              });
           }
+
+          
 
           console.log('exit toggle panel');
           console.log('panels lenght ' + panels.length);
@@ -218,15 +238,26 @@
         
         thisObject.init = function(rootEl) {
 
+
+
               var $root = rootEl ? $(rootEl) : $(document);
 
               console.log('in init ' + $root.get(0) + ' | ' + $root.get(0).className);
 
+              console.log('opts.selPane ' + opts.selPanel);
+
               if (!$root.length) return;
 
               console.log('autoclose event listening');
+
+
+              $shrinkEls = $(opts.selShrink);
+
+              console.log('SHRINK ' + $shrinkEls.length);
+
+
               // Autoclose panels when clicking outside any panel or any clickable related area
-              $(document).click(function(e) {
+              $(document).unbind('click.hidePanel').bind('click.hidePanel', function(e) {
                 if (!$(e.target).parents(opts.selPanel + ',' + opts.selClick).length) { 
                    toggle(null)();
                 }
@@ -236,7 +267,7 @@
               // Initialize and store new panels 
               $root.find(opts.selPanel).andSelf().filter(opts.selPanel).each(function(index, el) {
                 $el = $(el);
-                console.log('new panel ' + $el.get(0) + ' | ' + $el.get(0).className);
+                console.log('NEW PANEL ' + $el.get(0) + ' | ' + $el.get(0).className);
                 if (!findPanelByRef($el))  {
                   console.log('panel not found');
                   var panel = parsePanel($el);
@@ -254,11 +285,16 @@
               // Register click toggle events
               $root.find(opts.selClick).andSelf().filter(opts.selClick).each(function(index, el) {
                 $el = $(el);
+
+                //console.log('$el => ' + $el.get(0) + ' - ' + $el.get(0).className);
+
                 var $targetPanel = $('#' + $el.data(opts.selIdRefPanel));
+
+                //console.log('target panel ' + $targetPanel.get(0) + ' - ' + $targetPanel.get(0).className); 
                 
                 if ($targetPanel.length === 1 && findPanelByRef($targetPanel)) {
-                  console.log('register click toggle '); 
-                  $el.click(toggle($targetPanel));
+                  console.log('register click toggle ' + $targetPanel.get(0) + ' - ' + $targetPanel.get(0).className); 
+                  $el.unbind('click.togglePanel').on('click.togglePanel',toggle($targetPanel));
                 }
               });
 

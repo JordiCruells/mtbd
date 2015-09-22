@@ -42,16 +42,16 @@ if (isAjaxRequest()) {
   include 'include_list_activitys.php';  
 } else {
 
-  include 'head.html'; ?>
+  include 'head.php'; ?>
   <h1 class="text-center">Cercador d'activitats</h1>
   <div id="form-list" class="form-list" data-model="activity"> 
     <?php 
     include 'include_search_activitys.php'; 
     include 'include_list_activitys.php';
     ?>
-  </div>
+  </div>  
 <?php
-  include 'foot.html'; 
+  include 'foot.php'; 
 }
 
 ?>

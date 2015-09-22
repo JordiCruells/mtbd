@@ -9,7 +9,10 @@
   require_once 'ActivityDAO.class.php';
   
   $action = from_post_or_get('action', '');
-  
+
+  $response = array('status'=>'1', 'message' => '');
+  $isAjax = isAjaxRequest();
+
   if (empty($action)) {
     die('accio no informada'); exit;
   }
@@ -76,8 +79,6 @@
         if (count(flatten($activities)) > 0 ) {          
           $workshopDAO->linkActivities($insert_id, $activities);
         }
-
-        header("Location: http://www.mondemusica.com/music-teach/workshop_list.php?r=".mt_rand(0, 9999999));
         break;
 
      case 'update':
@@ -89,15 +90,19 @@
           $workshopDAO->linkActivities($workshop['id'], $activities);
         }
 
-        header("Location: http://www.mondemusica.com/music-teach/workshop_list.php?r=".mt_rand(0, 9999999));
         break;
 
      case 'delete':
         $workshopDAO->unlinkActivities($id);
         $workshopDAO->delete($id);
-        header("Location: http://www.mondemusica.com/music-teach/workshop_list.php?r=".mt_rand(0, 9999999));
         break;    
 
+  }
+
+  if ($isAjax) {
+    echo json_encode($response); exit;
+  } else {
+    header("Location: http://www.mondemusica.com/music-teach/workshop_list.php?r=".mt_rand(0, 9999999));
   }
 
 

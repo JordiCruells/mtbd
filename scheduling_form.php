@@ -63,11 +63,11 @@ $Paginator  = new ActivityPaginator($conn, $query, $group, $search_string, $sear
 
 $results = $Paginator->getData($limit,$page);
 
-include 'head.html'; 
+include 'head.php'; 
 
 ?>
 
-<div class="toggle-panel-shrink form-page">
+<div id="scheduling-form" class="toggle-panel-shrink form-page">
 
 <h1 class="text-center"><?php echo $title; ?></h1>
 
@@ -176,4 +176,4 @@ include 'head.html';
       <div id="search-box-list"><?php include 'include_list_activitys.php'; ?></div>
 </div>
 
-<?php include 'foot.html'; ?>
+<?php include 'foot.php'; ?>

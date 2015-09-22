@@ -53,7 +53,7 @@ if ($action === 'update') {
 
 $title = ($action === 'new') ? 'Nova activitat' : 'Modificar activitat';
 
-include 'head.html'; 
+include 'head.php'; 
 
 ?>
 
@@ -190,6 +190,12 @@ include 'head.html';
 </div>
 
 
-<?php include 'foot.html'; ?>
+<?php 
+if (!isAjaxRequest()) {
+  include 'foot.php'; 
+}
+
+?>
+
 
 

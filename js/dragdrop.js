@@ -58,7 +58,8 @@
                   // - dest: the DOM element that received de drop in event and which can be taken as a reference point from where to insert or update the DOM
                   // - src: the original element that fired the drag and drop operation (the actions to be performed when droping in an element may depend
                   //        from which was the origin or state of the initial dragged element)
-                  // Return: undefined
+                  // Return: must return the root node of the element appended to the DOM (if any) This element will be initialized using the initiators functions
+                  //         array 
                   dropInCB = opts.dropInCB || function($el, dest, src) {}, 
 
                   //dragEndCB = function (el)
@@ -84,8 +85,8 @@
               // page the callback functions must be bypassed when the element does not match the selector, meaning it was initiated by another drag'n drop operation)
               // A more accurate approach had beeen to activate/deactivate events at the dragstart, dragEnd, dropin events but this approach also works :)
               var matchSrcEl = function(e) {
-                  console.log('dragStartSelector:' + dragStartSelector);
-                  console.log(e.dataTransfer.getData('text/html'));
+                  /*console.log('dragStartSelector:' + dragStartSelector);
+                  console.log(e.dataTransfer.getData('text/html'));*/
                   $block = $(e.dataTransfer.getData('text/html'));
                   return $block.find(dragStartSelector).andSelf().filter(dragStartSelector).length > 0;
               };
@@ -101,10 +102,10 @@
 
               var handleDragStart = function(e) {
 
-                console.log('handleDragStart: ' + this + ' . ' + this.className); 
+                /*console.log('handleDragStart: ' + this + ' . ' + this.className); 
                 console.log('e.target: ' + e.target + ' - ' + e.target.className);
                 console.log('e.currentTarget: ' + e.currentTarget + ' - ' + e.currentTarget.className);
-                console.log('e.bubbles: ' + e.bubbles);
+                console.log('e.bubbles: ' + e.bubbles);*/
 
                 if (!(e.currentTarget === e.target)) return true;
 
@@ -119,7 +120,7 @@
               handleDragOver = function(e) {
 
                 if (!matchSrcEl(e)) return;
-                console.log('handleDragOver: ' + this + ' . ' + this.className);
+                //console.log('handleDragOver: ' + this + ' . ' + this.className);
                 
                 if (e.preventDefault) {
                   e.preventDefault(); // Necessary. Allows us to drop.
@@ -134,7 +135,7 @@
                 
                 if (!matchSrcEl(e)) return;
                 
-                console.log('handleDragEnter: ' + this + ' . ' + this.className);
+                //console.log('handleDragEnter: ' + this + ' . ' + this.className);
                 //console.log('dragSrcElMatchesdragStartSelector: ' + dragSrcElMatchesdragStartSelector);
 
                //if (!dragSrcElMatchesdragStartSelector) return;  
@@ -147,7 +148,7 @@
                 
                 if (!matchSrcEl(e)) return;
                 
-                console.log('handleDragLeave: ' + this + ' . ' + this.className);
+                //console.log('handleDragLeave: ' + this + ' . ' + this.className);
                 //console.log('dragSrcElMatchesdragStartSelector: ' + dragSrcElMatchesdragStartSelector);
 
                 //if (!dragSrcElMatchesdragStartSelector) return;
@@ -156,8 +157,8 @@
 
               handleDragEnd = function(e) {
 
-                console.log('handleDragEnd: ' + this + ' . ' + this.className);
-                console.log('handleDragEnd: ' + dragSrcEl);
+                /*console.log('handleDragEnd: ' + this + ' . ' + this.className);
+                console.log('handleDragEnd: ' + dragSrcEl);*/
 
                 if (!matchSrcEl(e)) return;
                 
@@ -195,7 +196,14 @@
                   }
 
                   $block = $(e.dataTransfer.getData('text/html'));
-                  dropInCB($block, this, srcEl);
+                  var newElement = dropInCB($block, this, srcEl);
+
+                  // Will initiate other events in the object (for example panels)
+                  if (newElement) {
+                    initiators.forEach(function(initiator) { // initialize other events or features
+                       initiator.init(newElement);
+                    });
+                  }
 
                   console.log('dragStartCB ' + dragStartCB);
                   dragStartCB(dragSrcEl);
@@ -224,6 +232,13 @@
               init = function(root) {
 
                 console.log('initialize ' + dragStartSelector + ' ' + dropInSelector);
+
+                console.log('root is ' + root);
+
+                if (!root || !root.querySelectorAll) {
+                  return; // It's not a node, so there's nothing to do with it
+                } 
+
                 srcElems = root.querySelectorAll(dragStartSelector),
                 destElems = root.querySelectorAll(dropInSelector);
 
@@ -259,6 +274,10 @@
         // Object DragAndDropManager returned
         var thisObject = {};
 
+
+        // Initiators
+        var initiators = [];
+
         // Private static property to get track af all instances of DragAndDrop objects
         var registeredManagers = [];
 
@@ -284,8 +303,10 @@
               $el.find('.ws-block').addClass('toggle-panel-click').attr('data-toggle-panel-id', 'search-box');
             }
             $el.insertBefore(dest.parentElement);
+
             defaultManagers['blocks'].init($el.get(0));
             defaultManagers['activitys'].init($el.get(0)); // Activate events for the new .ws-activity-container created div 
+            return $el[0];
           }
         });
 
@@ -328,6 +349,7 @@
 
             $node.insertBefore(dest.parentElement);
             defaultManagers['activitys'].init($node.get(0));
+            return $node[0];
           }
         });
 
@@ -367,9 +389,20 @@
 
           return thisObject;
 
+        }; 
+
+        var addInitiator = function(initiator) {
+
+          if (initiator && initiator.init) {
+            initiators.push(initiator);
+          }
+
+          return thisObject;
+
         };
 
         thisObject = {
+            addInitiator: addInitiator,
             registerManagerFor: registerManagerFor,
             init: init
         };

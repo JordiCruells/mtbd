@@ -41,7 +41,7 @@ $groupPaginator  = new GroupPaginator($conn,$query,$search_date);
 
 $results = $groupPaginator->getData($limit,$page);
 
-include 'head.html'; ?>
+include 'head.php'; ?>
 
 <h1 class="text-center">Grups</h1>
 
@@ -124,5 +124,5 @@ include 'head.html'; ?>
 
 
 
-<?php include 'foot.html'; ?>
+<?php include 'foot.php'; ?>
 

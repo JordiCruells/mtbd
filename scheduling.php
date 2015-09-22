@@ -7,6 +7,9 @@
   require_once 'Connection.class.php';
   require_once 'SchedulingDAO.class.php';
   require_once 'ActivityDAO.class.php';
+
+  $response = array('status'=>'1', 'message' => '');
+  $isAjax = isAjaxRequest();
   
   $action = from_post_or_get('action', '');
   
@@ -78,7 +81,6 @@
           $schedulingDAO->linkActivities($insert_id, $activities);
         }
 
-        header("Location: http://www.mondemusica.com/music-teach/scheduling_list.php?r=".mt_rand(0, 9999999));
         break;
 
      case 'update':
@@ -90,15 +92,20 @@
           $schedulingDAO->linkActivities($scheduling['id'], $activities);
         }
 
-        header("Location: http://www.mondemusica.com/music-teach/scheduling_list.php?r=".mt_rand(0, 9999999));
         break;
 
      case 'delete':
         $schedulingDAO->unlinkActivities($id);
         $schedulingDAO->delete($id);
-        header("Location: http://www.mondemusica.com/music-teach/scheduling_list.php?r=".mt_rand(0, 9999999));
         break;    
 
+  }
+
+
+  if ($isAjax) {
+    echo json_encode($response); exit;
+  } else {
+    header("Location: http://www.mondemusica.com/music-teach/scheduling_list.php?r=".mt_rand(0, 9999999));
   }
 
 

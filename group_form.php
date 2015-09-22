@@ -49,7 +49,7 @@ if ($action === 'update') {
 
 $title = ($action === 'new') ? 'Nou grup' : 'Modificar grup';
 
-include 'head.html'; 
+include 'head.php'; 
 
 ?>
 
@@ -156,6 +156,6 @@ include 'head.html';
 
 </div>
 
-<?php include 'foot.html'; ?>
+<?php include 'foot.php'; ?>
 
 

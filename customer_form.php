@@ -48,7 +48,7 @@ if ($action === 'update') {
 
 $title = ($action === 'new') ? 'Nova família' : 'Modificar família';
 
-include 'head.html'; 
+include 'head.php'; 
 
 ?>
 
@@ -134,6 +134,6 @@ include 'head.html';
 
 </div>
 
-<?php include 'foot.html'; ?>
+<?php include 'foot.php'; ?>
 
 

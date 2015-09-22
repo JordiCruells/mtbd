@@ -65,13 +65,34 @@
                 // define a new observer
                 var obs = new MutationObserver(function(mutations, observer){
 
+                    console.log('*********mutations length ' + mutations.length);
                     console.log('mutations[0].addedNodes.length ' + mutations[0].addedNodes.length);
-                    if( mutations[0].addedNodes.length) {
+
+
+                    //if( mutations[0].addedNodes.length) {
+
+                        //for (var i = 0; i < mutations.length; i++) {
+                          //console.log('mutations[i].type : ' + mutations[i].type);
+                          //for (var j = 0; j < mutations[i].addedNodes.length; j++) {
+                            //console.log('!!!!!!!!!!!mutations[' + 0 + '].addedNodes[' + 0 + '] ' +  mutations[0].addedNodes[0] + ' |' + mutations[0].addedNodes[0].className);
+                            //callback({target: mutations[0].addedNodes[0]});
+                          //}
+                        //}
+
                         
-                        console.log('mutations[0].addedNodes[0] ' +  mutations[0].addedNodes[0]);
-                       
-                        callback({target: mutations[0].addedNodes[0]});
-                    }
+                    //}
+
+                    mutations.forEach(function(mutation) {
+                      if (mutation.type === 'childList') {
+                        for (var i = 0; i < mutation.addedNodes.length; i++) {
+                            console.log('added node ' + mutation.addedNodes[i] + ' | ' + mutation.addedNodes[i].className );
+                            callback({target: mutation.addedNodes[i]});
+                        }
+                      }
+                    });  
+
+
+
                 });
                 // have the observer observe foo for changes in children
                 obs.observe( obj, { childList:true, subtree:true });
@@ -109,9 +130,9 @@
             console.log('len ' + $refresh.addClass('ajax-loading').find('.ajax-mask').length);
 
             $refresh.addClass('ajax-loading');
-            $ajaxMask =  $refresh.find('ajax-mask');
+            $ajaxMask =  $refresh.find('.ajax-mask');
 
-            $('.ajax-mask').fadeTo(500, 0.1, function() {
+            $ajaxMask.fadeTo(500, 0.1, function() {
                $.get($url,
                 function(data) {                 
                  $refresh.replaceWith(data);
@@ -121,5 +142,16 @@
 
             }); 
     };
+
+    var enableTextSelection = musTeach.enableTextSelection = musTeach.enableTextSelection || function(node) {
+
+      $(node).find('textarea, input, td, p, h1, h2, h3, h4, h5, h6')
+           .andSelf()
+           .filter('textarea, input, td, p, h1, h2, h3, h4, h5, h6')
+           .on('focus blur', toggleDraggable); 
+    }
+
+
+
 
 }(jQuery, window._musTeach = window._musTeach || {}, window, document));

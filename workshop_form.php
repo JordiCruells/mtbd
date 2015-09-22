@@ -69,7 +69,7 @@ $Paginator  = new ActivityPaginator($conn, $query, $group, $search_string, $sear
 
 $results = $Paginator->getData($limit,$page);
 
-include 'head.html'; 
+include 'head.php'; 
 
 ?>
 
@@ -190,6 +190,6 @@ include 'head.html';
 
 
 
-<?php include 'foot.html'; ?>
+<?php include 'foot.php'; ?>
 
 
