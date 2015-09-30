@@ -110,7 +110,7 @@
     echo json_encode($response); 
     exit;
   } else {
-    header("Location: http://www.mondemusica.com/music-teach/activity_list.php?r=".mt_rand(0, 9999999));
+    header("Location: " . $siteUrl . "activity_list.php?r=" . mt_rand(0, 9999999));
   }
   
 

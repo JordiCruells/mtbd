@@ -1,7 +1,7 @@
 <?php
 
 
-  require 'credentials.php';
+  require 'config.php';
 
   class Connection {
 

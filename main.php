@@ -1,5 +1,9 @@
 <?php 
 
+  require_once 'config.php';
+  $siteUrl = $SITE['baseUrl'] . $SITE['prefix'];
+  $sitePrefix = $SITE['prefix'];
+
   $types = array(
     '14' => 'So-silenci',
     '4' => 'Descoberta de sons',
@@ -168,8 +172,6 @@
   );
 
   
-
-
   $ages = array(
     '1' => '0 a 1',
     '2' => '1 a 3',
@@ -184,7 +186,7 @@
     '3' => 'Relaxació',
     '4' => 'Comiat'
   );*/
-
+  
 
   function from_get($key, $default) {
     return isset($_GET[$key]) ? $_GET[$key] : $default;

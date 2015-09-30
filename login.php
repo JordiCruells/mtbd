@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'main.php';
-include 'credentials.php';
+include 'config.php';
 
 $user = from_post('user', '');
 $password = from_post('password', '');
@@ -11,9 +11,9 @@ $password = from_post('password', '');
 
 if (credentials_check($user, $password)) {  
   $_SESSION['logged'] = 1;  
-  header('Location: http://' . $_SERVER['HTTP_HOST'] . '/music-teach/activity_list.php');
+  header("Location: " . $siteUrl . "/activity_list.php");
 } else {
-  header('Location: http://' . $_SERVER['HTTP_HOST'] . '/music-teach/index.php'); 
+  header("Location: " . $siteUrl . "/index.php'); 
 }
 
 ?>

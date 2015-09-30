@@ -105,7 +105,7 @@
   if ($isAjax) {
     echo json_encode($response); exit;
   } else {
-    header("Location: http://www.mondemusica.com/music-teach/scheduling_list.php?r=".mt_rand(0, 9999999));
+    header("Location: " . $siteUrl . "/scheduling_list.php?r=" . mt_rand(0, 9999999));
   }
 
 

@@ -3,13 +3,12 @@
   $uri = explode('?', $_SERVER['REQUEST_URI'], 2);
   $uri = $uri[0];
 
-//echo $uri;
-//echo 'Location:http://' . $_SERVER['HTTP_HOST'] . '/music-teach/index.php';
+  require_once 'main.php';
 
-  if ($uri !== '/music-teach/index.php') {
+  if ($uri !== '/' . $sitePrefix . '/index.php') {
    //echo ' session ' . $_SESSION['logged'];
      if (!(isset($_SESSION['logged']))) {
-        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/music-teach/index.php');
+        header('Location: ' . $siteUrl . '/index.php');
         //exit;
      }
   }
