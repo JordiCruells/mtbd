@@ -14,10 +14,24 @@
           searchForm,
           refreshListForm,
           $switchListMode,
-          model; 
+          model,
+          $rootNode,
+          _initiators,
+          _$modal; 
 
       var getRefreshURL = function(queryString) {
         return config.getPath(model, 'list', queryString);
+      };
+
+      var refreshList = function() {       
+        $refresh =  $rootNode.find('.refreshable.list');
+        var queryString = appendQueryParams($(searchForm).serialize(), formValues(refreshListForm));
+        ajaxRefresh(getRefreshURL(queryString), $refresh, function() {
+              thisObject.init($rootNode[0], _initiators, _$modal); // initialize list and search form events
+              _initiators.forEach(function(initiator) { // initialize other events or features
+               initiator.init($rootNode[0]);
+             });
+        });
       };
 
       thisObject.init = function(rootNode, initiators, $modal) { // Initiators are methods which init method must run after a new fresh list has beeen loaded
@@ -30,20 +44,13 @@
           refreshListForm = rootNode.querySelector('.pagination.form');
           model = rootNode.getAttribute('data-model');
           $rootNode = $(rootNode);
+          _initiators = initiators;
+          _$modal = $modal;
 
           // .refresh-list buttons
           $rootNode.find('.refresh-list').click(function(e) {
-
-            e.preventDefault();
-            $refresh =  $rootNode.find('.refreshable.list');
-            var queryString = appendQueryParams($(searchForm).serialize(), formValues(refreshListForm));
-            ajaxRefresh(getRefreshURL(queryString), $refresh, function() {
-              thisObject.init(rootNode, initiators, $modal); // initialize list and search form events
-              initiators.forEach(function(initiator) { // initialize other events or features
-                 initiator.init(rootNode);
-              });
-            });
-
+               e.preventDefault();
+               refreshList();
           });
 
           // pagination links must be followewd in ajax
@@ -148,6 +155,12 @@
 
 
           return thisObject;
+      };
+
+
+      thisObject.refresh = function() {
+        refreshList();
+        return thisObject;
       };
 
       return thisObject;

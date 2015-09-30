@@ -99,7 +99,15 @@
                    data:  $this.serialize(),
                    success: function(data)
                    {
-                       $modal.modal('toggle'); // Submit form inside modals closes the modal
+                       //$modal.modal('toggle'); // Submit form inside modals closes the modal
+                        if ($thisModal.length) {
+                          console.log('hide' + $thisModal.length + $thisModal.attr('class'));
+                          $thisModal.modal('hide');              
+                        } else {
+                          window.document.location = document.referrer || 'activity_list.php';
+                        }
+                        // If there is a list, refresh it after having saved some data
+                        if (modalList) modalList.refresh();
                    }
                  });
 
